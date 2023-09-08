@@ -30,11 +30,12 @@
 <h2>Contents</h2>
 <ul>
 <li><a href="#Class_Vis">Class Vis </a></li>
+<li><a href="#Class_Ui">Class Ui </a></li>
 <li><a href="#Class_Window">Class Window </a></li>
 <li><a href="#Class_Selection">Class Selection </a></li>
 <li><a href="#Class_File">Class File </a></li>
-<li><a href="#Class_Ui">Class Ui </a></li>
 <li><a href="#Class_Range">Class Range </a></li>
+<li><a href="#Layouts">Layouts </a></li>
 <li><a href="#Modes">Modes </a></li>
 <li><a href="#Key_Handling">Key Handling </a></li>
 <li><a href="#Core_Events">Core Events </a></li>
@@ -60,7 +61,7 @@
 </p>
     <h3>Info:</h3>
     <ul>
-        <li><strong>Release</strong>: 1a958f2</li>
+        <li><strong>Release</strong>: fa42f1c</li>
         <li><strong>License</strong>: ISC</li>
         <li><strong>Author</strong>: Marc André Tanner</li>
     </ul>
@@ -105,6 +106,10 @@
 	<td class="summary">Mode constants.</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#Vis.options">Vis.options</a></td>
+	<td class="summary">Vis Options</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#Vis.recording">Vis.recording</a></td>
 	<td class="summary">Whether a macro is being recorded.</td>
 	</tr>
@@ -129,12 +134,20 @@
 	<td class="summary">Register a Lua function as key action.</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#Vis:close">Vis:close(inputfd)</a></td>
+	<td class="summary">Closes a stream returned by <a href="index.html#Vis:communicate">Vis:communicate</a>.</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#Vis:command">Vis:command(command)</a></td>
 	<td class="summary">Execute a `:`-command.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Vis:command_register">Vis:command_register(name, command[, help])</a></td>
 	<td class="summary">Register a custom `:`-command.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Vis:communicate">Vis:communicate(name, command)</a></td>
+	<td class="summary">Open new process and return its input stream (stdin).</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Vis:exit">Vis:exit(code)</a></td>
@@ -157,16 +170,16 @@
 	<td class="summary">Insert keys at all cursor positions of active window.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Vis:map">Vis:map(mode, key, alias)</a></td>
-	<td class="summary">Setup a key alias.</td>
+	<td class="name" nowrap><a href="#Vis:map">Vis:map(mode, key, func[, help])</a></td>
+	<td class="summary">Map a key to a Lua function.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Vis:map">Vis:map(mode, key, action)</a></td>
 	<td class="summary">Map a key to a key action.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Vis:map">Vis:map(mode, key, func[, help])</a></td>
-	<td class="summary">Map a key to a Lua function.</td>
+	<td class="name" nowrap><a href="#Vis:map">Vis:map(mode, key, alias)</a></td>
+	<td class="summary">Setup a key alias.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Vis:mappings">Vis:mappings(mode)</a></td>
@@ -201,7 +214,7 @@
 	<td class="summary">Unregister a `:set` option.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Vis:pipe">Vis:pipe(file, range, command)</a></td>
+	<td class="name" nowrap><a href="#Vis:pipe">Vis:pipe([file][, range], command[, fullscreen])</a></td>
 	<td class="summary">Pipe file range to external process and collect output.</td>
 	</tr>
 	<tr>
@@ -229,6 +242,17 @@
 	<td class="summary">Create an iterator over all windows.</td>
 	</tr>
 </table>
+<h2><a href="#Class_Ui">Class Ui </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Ui.colors">Ui.colors</a></td>
+	<td class="summary">Number of available colors.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Ui.layout">Ui.layout</a></td>
+	<td class="summary">Current layout.</td>
+	</tr>
+</table>
 <h2><a href="#Class_Window">Class Window </a></h2>
 <table class="function_list">
 	<tr>
@@ -242,6 +266,10 @@
 	<tr>
 	<td class="name" nowrap><a href="#Window.marks">Window.marks</a></td>
 	<td class="summary">Window marks.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Window.options">Window.options</a></td>
+	<td class="summary">Window Options</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Window.selection">Window.selection</a></td>
@@ -327,6 +355,10 @@
 	<td class="summary">The range covered by this selection.</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#Selection:remove">Selection:remove()</a></td>
+	<td class="summary">Remove selection.</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#Selection:to">Selection:to(line, col)</a></td>
 	<td class="summary">Move cursor of selection.</td>
 	</tr>
@@ -352,6 +384,10 @@
 	<tr>
 	<td class="name" nowrap><a href="#File.permission">File.permission</a></td>
 	<td class="summary">File permission.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#File.savemethod">File.savemethod</a></td>
+	<td class="summary">File save method</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#File.size">File.size</a></td>
@@ -402,13 +438,6 @@
 	<td class="summary">Word text object.</td>
 	</tr>
 </table>
-<h2><a href="#Class_Ui">Class Ui </a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" nowrap><a href="#Ui.colors">Ui.colors</a></td>
-	<td class="summary">Number of available colors.</td>
-	</tr>
-</table>
 <h2><a href="#Class_Range">Class Range </a></h2>
 <table class="function_list">
 	<tr>
@@ -418,6 +447,13 @@
 	<tr>
 	<td class="name" nowrap><a href="#Range.start">Range.start</a></td>
 	<td class="summary">The beginning of the range.</td>
+	</tr>
+</table>
+<h2><a href="#Layouts">Layouts </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#layouts">layouts</a></td>
+	<td class="summary">Layout Constants.</td>
 	</tr>
 </table>
 <h2><a href="#Modes">Modes </a></h2>
@@ -459,6 +495,10 @@
 	<tr>
 	<td class="name" nowrap><a href="#input">input(key)</a></td>
 	<td class="summary">Input key event in either input or replace mode.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#process_response">process_response(name, response_type, code, buffer)</a></td>
+	<td class="summary">The response received from the process started via <a href="index.html#Vis:communicate">Vis:communicate</a>.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#quit">quit()</a></td>
@@ -699,6 +739,53 @@
 
 </dd>
     <dt>
+    <a name = "Vis.options"></a>
+    <strong>Vis.options</strong>
+    </dt>
+    <dd>
+    Vis Options
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">autoindent</span>
+            <span class="types"><span class="type">boolean</span></span>
+         {ai}
+         (<em>default</em> false)
+        </li>
+        <li><span class="parameter">changecolors</span>
+            <span class="types"><span class="type">boolean</span></span>
+
+         (<em>default</em> false)
+        </li>
+        <li><span class="parameter">escdelay</span>
+            <span class="types"><span class="type">int</span></span>
+
+         (<em>default</em> 50)
+        </li>
+        <li><span class="parameter">ignorecase</span>
+            <span class="types"><span class="type">boolean</span></span>
+         {ic}
+         (<em>default</em> false)
+        </li>
+        <li><span class="parameter">loadmethod</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         `"auto"`, `"read"`, or `"mmap"`.
+         (<em>default</em> "auto")
+        </li>
+        <li><span class="parameter">shell</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+
+         (<em>default</em> "/bin/sh")
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "Vis.recording"></a>
     <strong>Vis.recording</strong>
     </dt>
@@ -843,6 +930,33 @@
 
 </dd>
     <dt>
+    <a name = "Vis:close"></a>
+    <strong>Vis:close(inputfd)</strong>
+    </dt>
+    <dd>
+    Closes a stream returned by <a href="index.html#Vis:communicate">Vis:communicate</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">inputfd</span>
+            <span class="types"><span class="type">io.file</span></span>
+         the stream to be closed
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        identical to <a href="https://www.lua.org/manual/5.1/manual.html#pdf-io.close">io.close</a>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
     <a name = "Vis:command"></a>
     <strong>Vis:command(command)</strong>
     </dt>
@@ -920,6 +1034,42 @@
 	 <span class="keyword">return</span> <span class="keyword">true</span>;
 <span class="keyword">end</span>)</pre>
     </ul>
+
+</dd>
+    <dt>
+    <a name = "Vis:communicate"></a>
+    <strong>Vis:communicate(name, command)</strong>
+    </dt>
+    <dd>
+    Open new process and return its input stream (stdin).
+ If the stream is closed (by calling the close method or by being removed by a garbage collector)
+ the spawned process will be killed by SIGTERM.
+ When the process will quit or will output anything to stdout or stderr,
+ the <a href="index.html#process_response">process_response</a> event will be fired.
+<p> The editor core won't be blocked while the external process is running.
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the name of subprocess (to distinguish processes in the <a href="index.html#process_response">process_response</a> event)
+        </li>
+        <li><span class="parameter">command</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the command to execute
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        the file handle to write data to the process, in case of error the return values are equivalent to <a href="https://www.lua.org/manual/5.1/manual.html#pdf-io.open">io.open</a> error values.
+    </ol>
+
+
+
 
 </dd>
     <dt>
@@ -1052,97 +1202,6 @@
 </dd>
     <dt>
     <a name = "Vis:map"></a>
-    <strong>Vis:map(mode, key, alias)</strong>
-    </dt>
-    <dd>
-    Setup a key alias.
-<p> This is equivalent to `vis:command('map! mode key alias')`.
-<p> Mappings are always recursive!
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">mode</span>
-            <span class="types"><span class="type">int</span></span>
-         the mode to which the mapping should be added
-        </li>
-        <li><span class="parameter">key</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         the key to map
-        </li>
-        <li><span class="parameter">alias</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         the key to map to
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">bool</span></span>
-        whether the mapping was successfully established
-    </ol>
-
-
-    <h3>See also:</h3>
-    <ul>
-         <a href="index.html#Window:map">Window:map</a>
-    </ul>
-
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example">vis:map(vis.modes.NORMAL, <span class="string">"j"</span>, <span class="string">"k"</span>)</pre>
-    </ul>
-
-</dd>
-    <dt>
-    <a name = "Vis:map"></a>
-    <strong>Vis:map(mode, key, action)</strong>
-    </dt>
-    <dd>
-    Map a key to a key action.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">mode</span>
-            <span class="types"><span class="type">int</span></span>
-         the mode to which the mapping should be added
-        </li>
-        <li><span class="parameter">key</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         the key to map
-        </li>
-        <li><span class="parameter">action</span>
-         the action to map
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">bool</span></span>
-        whether the mapping was successfully established
-    </ol>
-
-
-    <h3>See also:</h3>
-    <ul>
-         <a href="index.html#Window:map">Window:map</a>
-    </ul>
-
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example"><span class="keyword">local</span> action = vis:action_register(<span class="string">"info"</span>, <span class="keyword">function</span>()
-  vis:info(<span class="string">"Mapping works!"</span>)
-<span class="keyword">end</span>, <span class="string">"Info message help text"</span>)
-vis:map(vis.modes.NORMAL, <span class="string">"gh"</span>, action)
-vis:map(vis.modes.NORMAL, <span class="string">"gl"</span>, action)</pre>
-    </ul>
-
-</dd>
-    <dt>
-    <a name = "Vis:map"></a>
     <strong>Vis:map(mode, key, func[, help])</strong>
     </dt>
     <dd>
@@ -1197,6 +1256,97 @@ vis:map(vis.modes.NORMAL, <span class="string">"gl"</span>, action)</pre>
 		<span class="keyword">return</span> <span class="number">2</span> <span class="comment">-- consume 2 bytes of input
 </span>	<span class="keyword">end</span>
 <span class="keyword">end</span>, <span class="string">"Insert digraph"</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "Vis:map"></a>
+    <strong>Vis:map(mode, key, action)</strong>
+    </dt>
+    <dd>
+    Map a key to a key action.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">mode</span>
+            <span class="types"><span class="type">int</span></span>
+         the mode to which the mapping should be added
+        </li>
+        <li><span class="parameter">key</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the key to map
+        </li>
+        <li><span class="parameter">action</span>
+         the action to map
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        whether the mapping was successfully established
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#Window:map">Window:map</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> action = vis:action_register(<span class="string">"info"</span>, <span class="keyword">function</span>()
+  vis:info(<span class="string">"Mapping works!"</span>)
+<span class="keyword">end</span>, <span class="string">"Info message help text"</span>)
+vis:map(vis.modes.NORMAL, <span class="string">"gh"</span>, action)
+vis:map(vis.modes.NORMAL, <span class="string">"gl"</span>, action)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "Vis:map"></a>
+    <strong>Vis:map(mode, key, alias)</strong>
+    </dt>
+    <dd>
+    Setup a key alias.
+<p> This is equivalent to `vis:command('map! mode key alias')`.
+<p> Mappings are always recursive!
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">mode</span>
+            <span class="types"><span class="type">int</span></span>
+         the mode to which the mapping should be added
+        </li>
+        <li><span class="parameter">key</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the key to map
+        </li>
+        <li><span class="parameter">alias</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the key to map to
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">bool</span></span>
+        whether the mapping was successfully established
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#Window:map">Window:map</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">vis:map(vis.modes.NORMAL, <span class="string">"j"</span>, <span class="string">"k"</span>)</pre>
     </ul>
 
 </dd>
@@ -1261,7 +1411,7 @@ vis:map(vis.modes.NORMAL, <span class="string">"gl"</span>, action)</pre>
 <span class="keyword">for</span> name <span class="keyword">in</span> vis:mark_names() <span class="keyword">do</span>
 	<span class="keyword">local</span> mark = marks[name]
 	<span class="keyword">for</span> i = <span class="number">1</span>, #mark <span class="keyword">do</span>
-		<span class="comment">-- do somthing with: name, mark[i].start, mark[i].finish
+		<span class="comment">-- do something with: name, mark[i].start, mark[i].finish
 </span>	<span class="keyword">end</span>
 <span class="keyword">end</span></pre>
     </ul>
@@ -1333,7 +1483,7 @@ vis:map(vis.modes.NORMAL, <span class="string">"gl"</span>, action)</pre>
     <ul>
         <li><span class="parameter">key</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
-         the key to associate with the new mption
+         the key to associate with the new option
         </li>
         <li><span class="parameter">motion</span>
             <span class="types"><span class="type">function</span></span>
@@ -1405,14 +1555,14 @@ vis:map(vis.modes.NORMAL, <span class="string">"gl"</span>, action)</pre>
     <ul>
         <pre class="example">vis:operator_new(<span class="string">"gq"</span>, <span class="keyword">function</span>(file, range, pos)
 	<span class="keyword">local</span> status, out, err = vis:pipe(file, range, <span class="string">"fmt"</span>)
-	<span class="keyword">if</span> <span class="keyword">not</span> status <span class="keyword">then</span>
+	<span class="keyword">if</span> status ~= <span class="number">0</span> <span class="keyword">then</span>
 		vis:info(err)
 	<span class="keyword">else</span>
 		file:delete(range)
 		file:insert(range.start, out)
 	<span class="keyword">end</span>
 	<span class="keyword">return</span> range.start <span class="comment">-- new cursor location
-</span><span class="keyword">end</span>, <span class="string">"Formating operator, filter range through fmt(1)"</span>)</pre>
+</span><span class="keyword">end</span>, <span class="string">"Formatting operator, filter range through fmt(1)"</span>)</pre>
     </ul>
 
 </dd>
@@ -1456,9 +1606,9 @@ vis:map(vis.modes.NORMAL, <span class="string">"gl"</span>, action)</pre>
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">vis:option_register(<span class="string">"foo"</span>, <span class="string">"bool"</span>, <span class="keyword">function</span>(value, toogle)
+        <pre class="example">vis:option_register(<span class="string">"foo"</span>, <span class="string">"bool"</span>, <span class="keyword">function</span>(value, toggle)
 	<span class="keyword">if</span> <span class="keyword">not</span> vis.win <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">false</span> <span class="keyword">end</span>
-	vis.win.foo = toogle <span class="keyword">and</span> <span class="keyword">not</span> vis.win.foo <span class="keyword">or</span> value
+	vis.win.foo = toggle <span class="keyword">and</span> <span class="keyword">not</span> vis.win.foo <span class="keyword">or</span> value
 	vis:info(<span class="string">"Option foo = "</span> .. <span class="global">tostring</span>(vis.win.foo))
 	<span class="keyword">return</span> <span class="keyword">true</span>
 <span class="keyword">end</span>, <span class="string">"Foo enables superpowers"</span>)</pre>
@@ -1494,11 +1644,12 @@ vis:map(vis.modes.NORMAL, <span class="string">"gl"</span>, action)</pre>
 </dd>
     <dt>
     <a name = "Vis:pipe"></a>
-    <strong>Vis:pipe(file, range, command)</strong>
+    <strong>Vis:pipe([file][, range], command[, fullscreen])</strong>
     </dt>
     <dd>
     Pipe file range to external process and collect output.
 <p> The editor core will be blocked while the external process is running.
+ File and Range can be omitted or nil to indicate empty input.
 
 
 
@@ -1507,14 +1658,21 @@ vis:map(vis.modes.NORMAL, <span class="string">"gl"</span>, action)</pre>
         <li><span class="parameter">file</span>
             <span class="types"><a class="type" href="index.html#Class_File">File</a></span>
          the file to which the range applies
+         (<em>optional</em>)
         </li>
         <li><span class="parameter">range</span>
             <span class="types"><a class="type" href="index.html#Class_Range">Range</a></span>
          the range to pipe
+         (<em>optional</em>)
         </li>
         <li><span class="parameter">command</span>
             <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
          the command to execute
+        </li>
+        <li><span class="parameter">fullscreen</span>
+            <span class="types"><span class="type">bool</span></span>
+         whether command is a fullscreen program (e.g. curses based)
+         (<em>optional</em>)
         </li>
     </ul>
 
@@ -1719,6 +1877,53 @@ vis:map(vis.modes.NORMAL, <span class="string">"gl"</span>, action)</pre>
 
 </dd>
 </dl>
+    <h2 class="section-header has-description"><a name="Class_Ui"></a>Class Ui </h2>
+
+          <div class="section-description">
+          The user interface.
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "Ui.colors"></a>
+    <strong>Ui.colors</strong>
+    </dt>
+    <dd>
+    Number of available colors.
+
+
+    <ul>
+        <li><span class="parameter">colors</span>
+            <span class="types"><span class="type">int</span></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Ui.layout"></a>
+    <strong>Ui.layout</strong>
+    </dt>
+    <dd>
+    Current layout.
+
+
+    <ul>
+        <li><span class="parameter">layout</span>
+            <span class="types"><a class="type" href="index.html#layouts">layouts</a></span>
+         current window layout.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
     <h2 class="section-header has-description"><a name="Class_Window"></a>Class Window </h2>
 
           <div class="section-description">
@@ -1786,6 +1991,83 @@ vis:map(vis.modes.NORMAL, <span class="string">"gl"</span>, action)</pre>
     <h3>See also:</h3>
     <ul>
     </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Window.options"></a>
+    <strong>Window.options</strong>
+    </dt>
+    <dd>
+    Window Options
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">breakat</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         {brk}
+         (<em>default</em> "")
+        </li>
+        <li><span class="parameter">colorcolumn</span>
+            <span class="types"><span class="type">int</span></span>
+         {cc}
+         (<em>default</em> 0)
+        </li>
+        <li><span class="parameter">cursorline</span>
+            <span class="types"><span class="type">boolean</span></span>
+         {cul}
+         (<em>default</em> false)
+        </li>
+        <li><span class="parameter">expandtab</span>
+            <span class="types"><span class="type">boolean</span></span>
+         {et}
+         (<em>default</em> false)
+        </li>
+        <li><span class="parameter">numbers</span>
+            <span class="types"><span class="type">boolean</span></span>
+         {nu}
+         (<em>default</em> false)
+        </li>
+        <li><span class="parameter">relativenumbers</span>
+            <span class="types"><span class="type">boolean</span></span>
+         {rnu}
+         (<em>default</em> false)
+        </li>
+        <li><span class="parameter">showeof</span>
+            <span class="types"><span class="type">boolean</span></span>
+
+         (<em>default</em> true)
+        </li>
+        <li><span class="parameter">shownewlines</span>
+            <span class="types"><span class="type">boolean</span></span>
+
+         (<em>default</em> false)
+        </li>
+        <li><span class="parameter">showspaces</span>
+            <span class="types"><span class="type">boolean</span></span>
+
+         (<em>default</em> false)
+        </li>
+        <li><span class="parameter">showtabs</span>
+            <span class="types"><span class="type">boolean</span></span>
+
+         (<em>default</em> false)
+        </li>
+        <li><span class="parameter">tabwidth</span>
+            <span class="types"><span class="type">int</span></span>
+         {tw}
+         (<em>default</em> 8)
+        </li>
+        <li><span class="parameter">wrapcolumn</span>
+            <span class="types"><span class="type">int</span></span>
+         {wc}
+         (<em>default</em> 0)
+        </li>
+    </ul>
+
+
+
 
 
 </dd>
@@ -2165,12 +2447,12 @@ vis:map(vis.modes.NORMAL, <span class="string">"gl"</span>, action)</pre>
 <p>    Like a regular mark it will become valid again when the text is reverted
     to the state before the deletion.
 <p>  - Inserts after the selection position (`> selection.pos`) will not affect the
-    selection postion.
+    selection position.
 <p>        local pos = win.selection.pos
         win.file:insert(pos+1, "-")
         assert(win.selection.pos == pos)
 <p>  - Non-cached inserts before the selection position (`<= selection.pos`) will
-    affect the mark and adjust the selection postion by the number of bytes
+    affect the mark and adjust the selection position by the number of bytes
     which were inserted.
 <p>        local pos = win.selection.pos
         win.file:insert(pos, "-")
@@ -2182,7 +2464,7 @@ vis:map(vis.modes.NORMAL, <span class="string">"gl"</span>, action)</pre>
  after a modification. The general procedure amounts to:
 <p> 1. Read out the current selection position
  2. Perform text modifications
- 3. Update the selection postion
+ 3. Update the selection position
 <p> This is what <a href="index.html#Vis:insert">Vis:insert</a> and <a href="index.html#Vis:replace">Vis:replace</a> do internally.
 
           </div>
@@ -2317,6 +2599,20 @@ win.selection.pos = pos + #data</pre>
 
         </li>
     </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Selection:remove"></a>
+    <strong>Selection:remove()</strong>
+    </dt>
+    <dd>
+    Remove selection.
+
+
 
 
 
@@ -2460,6 +2756,27 @@ win.selection.pos = pos + #data</pre>
         <li><span class="parameter">permission</span>
             <span class="types"><span class="type">int</span></span>
          the file permission bits as of the most recent load/save
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "File.savemethod"></a>
+    <strong>File.savemethod</strong>
+    </dt>
+    <dd>
+    File save method
+
+
+    <ul>
+        <li><span class="parameter">savemethod</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         `"auto"`, `"atomic"`, or `"inplace"`.
+         (<em>default</em> "auto")
         </li>
     </ul>
 
@@ -2818,33 +3135,6 @@ win.selection.pos = pos + #data</pre>
 
 </dd>
 </dl>
-    <h2 class="section-header has-description"><a name="Class_Ui"></a>Class Ui </h2>
-
-          <div class="section-description">
-          The user interface.
-          </div>
-    <dl class="function">
-    <dt>
-    <a name = "Ui.colors"></a>
-    <strong>Ui.colors</strong>
-    </dt>
-    <dd>
-    Number of available colors.
-
-
-    <ul>
-        <li><span class="parameter">colors</span>
-            <span class="types"><span class="type">int</span></span>
-
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</dl>
     <h2 class="section-header has-description"><a name="Class_Range"></a>Class Range </h2>
 
           <div class="section-description">
@@ -2883,6 +3173,35 @@ win.selection.pos = pos + #data</pre>
 
     <ul>
         <li><span class="parameter">start</span>
+            <span class="types"><span class="type">int</span></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Layouts"></a>Layouts </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "layouts"></a>
+    <strong>layouts</strong>
+    </dt>
+    <dd>
+    Layout Constants.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">HORIZONTAL</span>
+            <span class="types"><span class="type">int</span></span>
+
+        </li>
+        <li><span class="parameter">VERTICAL</span>
             <span class="types"><span class="type">int</span></span>
 
         </li>
@@ -3071,7 +3390,7 @@ win.selection.pos = pos + #data</pre>
     </dt>
     <dd>
     File post save.
- Triggered *after* a successfull write operation.
+ Triggered *after* a successful write operation.
 
 
     <h3>Parameters:</h3>
@@ -3130,7 +3449,7 @@ win.selection.pos = pos + #data</pre>
     <dd>
     Editor initialization completed.
  This event is emitted immediately after `visrc.lua` has been sourced, but
- before any other events have occured, in particular the command line arguments
+ before any other events have occurred, in particular the command line arguments
  have not yet been processed.
 <p> Can be used to set *global* configuration options.
 
@@ -3163,6 +3482,39 @@ win.selection.pos = pos + #data</pre>
            <span class="types"><span class="type">bool</span></span>
         whether the key was consumed or not
     </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "process_response"></a>
+    <strong>process_response(name, response_type, code, buffer)</strong>
+    </dt>
+    <dd>
+    The response received from the process started via <a href="index.html#Vis:communicate">Vis:communicate</a>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the name of process given to <a href="index.html#Vis:communicate">Vis:communicate</a>
+        </li>
+        <li><span class="parameter">response_type</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         can be "STDOUT" or "STDERR" if new output was received in corresponding channel, "SIGNAL" if the process was terminated by a signal or "EXIT" when the process terminated normally
+        </li>
+        <li><span class="parameter">code</span>
+            <span class="types"><span class="type">int</span></span>
+         the exit code number if response_type is "EXIT", or the signal number if response_type is "SIGNAL"
+        </li>
+        <li><span class="parameter">buffer</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a></span>
+         the available content sent by the process
+        </li>
+    </ul>
+
 
 
 
@@ -3377,6 +3729,9 @@ win.selection.pos = pos + #data</pre>
         <li><span class="parameter">TERM_CSI</span>
         see <a href="index.html#term_csi">term_csi</a>
         </li>
+        <li><span class="parameter">PROCESS_RESPONSE</span>
+        see <a href="index.html#process_response">process_response</a>
+        </li>
     </ul>
 
 
@@ -3404,7 +3759,7 @@ win.selection.pos = pos + #data</pre>
         </li>
         <li><span class="parameter">...</span>
             <span class="types"><span class="type">...</span></span>
-         the remaining paramters are passed on to the handler
+         the remaining parameters are passed on to the handler
         </li>
     </ul>
 
@@ -3490,7 +3845,7 @@ win.selection.pos = pos + #data</pre>
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2021-04-20 19:49:26 </i>
+<i style="float:right;">Last updated 2023-09-08 16:18:30 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
